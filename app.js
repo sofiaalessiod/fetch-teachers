@@ -6,24 +6,34 @@ window.addEventListener("load", initApp); // When the page is loaded, run initAp
 async function initApp() {
   console.log("initApp: app.js is running 🎉"); // Log to the console that the app is running
   const teachers = await getTeachers();
-  console.log (teachers);
+  console.log(teachers);
   displayTeachers(teachers);
 }
 
 async function getTeachers() {
-  const response = await fetch("https://raw.githubusercontent.com/cederdorff/race/master/data/users.json"); //Fetch data from the API
+  const response = await fetch(
+    "https://headless.sofiaalessiod.dk/wp-json/wp/v2/teacher?acf_format=standard"
+  ); //Fetch data from the API
   const data = await response.json();
   return data;
 }
 
 getTeachers(); //need this - calls the function so it shows up on the browser
 
-function displayTeachers(teachers) {
-  console.log(teachers);
+function displayTeachersGrid(teachers) {
+  const teachersList = document.querySelector("#teachers-grid");
 
-  const teachersList = document.querySelector("#teachers-list");
-  
   for (const teacher of teachers) {
-    teachersList.insertAdjacentHTML("beforeend", `<li>${teacher.name}</li>`);
+    teachersGrid.insertAdjacentHTML(
+      "beforeend",
+      `
+        <article class="grid-item">
+        <img scr="$teacher.acf.image}" alt="${teacher.acf.name}" />
+        <h2>${teacher.acf.name}</h2>
+        <p>${teacher.acf.title}</p>
+        <a href="mailto:${teacher.acf.mail}">${teacher.acf.mail}</a>
+        </article>
+      `
+    );
   }
 }
